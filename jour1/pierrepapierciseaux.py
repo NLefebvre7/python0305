@@ -10,7 +10,7 @@ user = user.lower()
 
 if user == 'pierre' or 'papier' or 'ciseaux':
     print ("Vous avez choisi", user , "l'ordi a choisi" , ordi)
-if user == 'pierre':
+
     if ordi == 'pierre':
         print ('Match nul')
     elif ordi == 'papier':
