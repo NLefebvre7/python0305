@@ -157,7 +157,7 @@ def add_block():
       index = 16   #conn.execute('SELECT index FROM blockchain ')#SELECT * FROM blokcchain ORDER BY column DESC LIMIT 1;    #request.form['index']# recupmerer de la base de donnée le dernier
 
       previoushash = "testqsssdd"# recupere de la bdd dernier hash
-      data = "sdfs"#request.form['data']
+      data = request.form['data']
       timestamp = datetime.now()    
       nonce = 0
       
