@@ -1,0 +1,36 @@
+{% block content %} 
+<h1> new block test</h1>
+<form method="post">
+
+    <div class="form-group">
+
+        <label for="data">data</label>
+
+        <input type="text" name="data"
+
+               placeholder="Post data" class="form-control"
+
+               value="{{ request.form['data'] }}"></input>
+
+    </div>
+
+
+
+    <!-- <div class="form-group">
+
+        <label for="hash">Content</label>
+
+        <textarea name="content" placeholder="Post content"
+
+                  class="form-control">{{ request.form['content'] }}</textarea> -->
+
+    <!-- </div> -->
+
+    <div class="form-group">
+
+        <button type="submit" class="btn btn-primary">Submit</button>
+
+    </div>
+
+</form>
+{% endblock %} 

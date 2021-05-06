@@ -82,7 +82,7 @@ class Blockchain(object):
             # f = open('storeblockchain'+str(block.index)+'.txt','wb')
             # f.write("str(chain))
             # f.close()
-            with open('./testbc.txt', 'a') as file:
+            with open('testbc.txt', 'a') as file:
               file.write(""+chain+"\n")
 
 
