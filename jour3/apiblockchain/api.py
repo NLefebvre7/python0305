@@ -232,7 +232,7 @@ def api_all():
 
     return jsonify(all_blocks)
 
-path = 'E:\\IPSSI\\github\\python0305\\testbc.txt'
+path = 'E:\\IPSSI\\github\\python0305\\jour3\\apiblockchain\\testbc.txt'
 def display():
     file1 = open(path, 'r')
     Lines = file1.readlines()
@@ -294,32 +294,71 @@ def home():
 #             msg = 'Incorrect username / password !'
 #     return render_template('login.html', msg = msg)
 
-# @app.route('/register', methods =['GET', 'POST'])
-# def register():
-#     msg = ''
-#     if request.method == 'POST' and 'username' in request.form and 'password' in request.form and 'email' in request.form :
-#         username = request.form['username']
-#         password = request.form['password']
-#         email = request.form['email']
-#         cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-#         cursor.execute('SELECT * FROM accounts WHERE username = % s', (username, ))
-#         account = cursor.fetchone()
-#         if account:
-#             msg = 'Account already exists !'
-#         elif not re.match(r'[^@]+@[^@]+\.[^@]+', email):
-#             msg = 'Invalid email address !'
-#         elif not re.match(r'[A-Za-z0-9]+', username):
-#             msg = 'Username must contain only characters and numbers !'
-#         elif not username or not password or not email:
-#             msg = 'Please fill out the form !'
-#         else:
-#             cursor.execute('INSERT INTO accounts VALUES (NULL, % s, % s, % s)', (username, password, email, ))
-#             mysql.connection.commit()
-#             msg = 'You have successfully registered !'
-#     elif request.method == 'POST':
-#         msg = 'Please fill out the form !'
-#     return render_template('register.html', msg = msg)
+        # elif not re.match(r'[^@]+@[^@]+\.[^@]+', email):
+        #     msg = 'Invalid email address !'
+        # elif not re.match(r'[A-Za-z0-9]+', username):
+        #     msg = 'Username must contain only characters and numbers !'
+        # elif not username or not password or not email:
+        #     msg = 'Please fill out the form !'
 
+@app.route('/user/register', methods =['GET', 'POST'])
+def register():
+    if request.method == 'POST' :
+        username = request.form['username']
+        password = request.form['password']
+
+
+        conn = sqlite3.connect('block.db')
+      
+
+        usernamealready = ''
+        testifuser = conn.execute('''SELECT username FROM user WHERE username = (?)''', (username, ))
+        for row in testifuser :
+          usernamealready = row[0]
+          print (usernamealready)
+
+        if usernamealready == username:
+            flash('username already taken')
+            return redirect("http://127.0.0.1:5000/user/register")
+        else:
+            conn.execute('''INSERT INTO user ( username, password) VALUES(?,?)''', (username, password,))
+            conn.commit()
+            return redirect("http://127.0.0.1:5000/user/login") #redirect in login
+    return render_template('register.html')
+
+@app.route('/user/all', methods=['GET'])
+def user_all():
+    conn = sqlite3.connect('block.db')
+
+    conn.row_factory = dict_factory
+    
+    cur = conn.cursor()
+
+    all_users = cur.execute('SELECT * FROM user;').fetchall()
+
+    return jsonify(all_users)
+
+@app.route('/user/login', methods =['GET', 'POST'])
+def login():
+
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        conn = sqlite3.connect('block.db')
+        password1 = ''
+        passworduser = conn.execute('SELECT password FROM user WHERE username = (?)', (username, ))
+        for row in passworduser :
+          password1 = row[0]
+
+        if password == password1:
+            # session['loggedin'] = True
+            # session['username'] = username
+            flash('Logged in.')
+            return redirect("http://127.0.0.1:5000/") 
+        else:
+           flash('Incorrect credentials')
+           return redirect("http://127.0.0.1:5000/WRONGPASSWORD")
+    return render_template('login.html')
 
 
 app.run()
