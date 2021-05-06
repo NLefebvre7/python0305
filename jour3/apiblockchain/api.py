@@ -154,16 +154,43 @@ def add_block():
       
 
       #SELECT * FROM tablename ORDER BY column DESC LIMIT 1;
-      index = 16   #conn.execute('SELECT index FROM blockchain ')#SELECT * FROM blokcchain ORDER BY column DESC LIMIT 1;    #request.form['index']# recupmerer de la base de donnée le dernier
+      #index = 21   #conn.execute('SELECT index FROM blockchain ')#SELECT * FROM blokcchain ORDER BY column DESC LIMIT 1;    #request.form['index']# recupmerer de la base de donnée le dernier
+      
+      
 
-      previoushash = "testqsssdd"# recupere de la bdd dernier hash
+      # recupere de la bdd dernier hash
       data = request.form['data']
       timestamp = datetime.now()    
       nonce = 0
+      dernierindex = conn.execute('''SELECT MAX(`index`) FROM blockchain;''')
+      for row in dernierindex :
+        
+        index = row[0]
+        print (index)
+       
+
+    #   dernierhash = conn.execute('''SELECT previoushash FROM blockchain where `index`= ?''', test)
+    #   for row in dernierhash :
+        
+    #     previoushash = row[0]
+    #     print (previoushash)
       
-      
+      dernierhash = conn.execute('''SELECT hash FROM blockchain where `index`=(?)''', (index,))
+      for row in dernierhash :
+        
+        previoushash = row[0]
+        print (previoushash)
+    
+    #   conn.execute(sqlrequete, 22)
+
+      #previoushash = "fdsdfs"
       block = (Block(index + 1, previoushash, data))
       print("\n\n\n"+str(block.index)+"\n\n\n")
+      
+     
+        
+      #print("\n\n\n"+str(testsql)+"\n\n\n")
+
 
       if not id:
           flash('error')
@@ -171,7 +198,6 @@ def add_block():
         conn = sqlite3.connect('block.db')
         conn.execute('''INSERT INTO blockchain ( `index`, previoushash, timestamp, data, nonce, hash ) VALUES(?,?,?,?,?,?)''', ( block.index, block.previoushash,block.timestamp,block.data,block.nonce,block.hash )) #tout mettre de block
         conn.commit()
-        conn.close()
         return redirect("http://127.0.0.1:5000/blocks/all")
     return render_template('postblock.html')
 
