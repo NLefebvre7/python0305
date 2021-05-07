@@ -269,7 +269,9 @@ def display():
 def home():
     return "<h1>NL & PL</h1><a href='http://127.0.0.1:5000/user/login'> Login page </a><p>Voici vos blocks generé precedemment : <br><br>"+display()+"</p>"
 
-
+@app.route('/wrongpassword', methods=['GET'])
+def wrongpassword():
+    return render_template('wrongpassword.html')
 # app.secret_key = 'your secret key'
   
 # app.config['MYSQL_HOST'] = 'localhost'
@@ -356,7 +358,7 @@ def login():
             # session['loggedin'] = True
             # session['username'] = username
             flash('Logged in.')
-            return redirect("http://127.0.0.1:5000/") 
+            return redirect("http://127.0.0.1:5000/wrongpassword") 
         else:
            flash('Incorrect credentials')
            return render_template('wrongpassword.html')
