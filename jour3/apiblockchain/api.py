@@ -221,6 +221,8 @@ def add_block():
 
 
 @app.route('/blocks/all', methods=['GET'])
+# def home2():
+#     return "<a href='http://127.0.0.1:5000/postblock'> postblock page </a>"
 def api_all():
     conn = sqlite3.connect('block.db')
 
@@ -236,7 +238,7 @@ path = 'E:\\IPSSI\\github\\python0305\\jour3\\apiblockchain\\testbc.txt'
 def display():
     file1 = open(path, 'r')
     Lines = file1.readlines()
-
+     
     chain1 = " "
     for line in Lines:
         chain1 = chain1 + "{}".format(line.strip()) + "<br>"
@@ -265,7 +267,7 @@ def display():
 
 @app.route('/', methods=['GET'])
 def home():
-    return "<h1>NL & PL</h1><p>Voici vos blocks generé precedemment <br><br>"+display()+"</p>"
+    return "<h1>NL & PL</h1><a href='http://127.0.0.1:5000/user/login'> Login page </a><p>Voici vos blocks generé precedemment : <br><br>"+display()+"</p>"
 
 
 # app.secret_key = 'your secret key'
@@ -357,7 +359,7 @@ def login():
             return redirect("http://127.0.0.1:5000/") 
         else:
            flash('Incorrect credentials')
-           return redirect("http://127.0.0.1:5000/WRONGPASSWORD")
+           return render_template('wrongpassword.html')
     return render_template('login.html')
 
 
