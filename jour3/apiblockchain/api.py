@@ -358,7 +358,7 @@ def login():
             # session['loggedin'] = True
             # session['username'] = username
             flash('Logged in.')
-            return redirect("http://127.0.0.1:5000/wrongpassword") 
+            return redirect("http://127.0.0.1:5000/") 
         else:
            flash('Incorrect credentials')
            return render_template('wrongpassword.html')
